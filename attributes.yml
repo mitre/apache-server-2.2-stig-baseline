@@ -1,0 +1,31 @@
+# encoding: utf-8
+#
+# This is an example of an attributes file that can be passed to the profile
+# to override the defaults of the attributes defined in each of the tests.
+# You can use this to automatically adjust your tests when using automation or
+# progromatic deployment or validation of differnt deployment patterns without
+# having to adjust the core profile.
+
+# Description: Apache home Directory
+apache_home: '/etc/httpd/'
+
+# Description: Apache conf Directory
+apache_conf_dir: '/etc/httpd/conf'
+
+# Description: Apache library Directory
+apache_lib_dir: '/usr/share/java/apache'
+
+# Description: Apache service Name
+apache_service_name: 'httpd'
+
+# Description: apache username
+apache_user: 'apache'
+
+# Description: Port of the apache instance
+apache_port: '8084'
+
+# Description: Group owner of files/directories
+apache_group: 'apache'
+
+# Description: User owner of files/directories
+apache_owner: 'apache'
