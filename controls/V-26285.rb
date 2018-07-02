@@ -1,3 +1,20 @@
+APACHE_AUTHORIZED_MODULES= attribute(
+  'apache_authorized_modules',
+  description: 'List of  authorized apache modules.',
+  default: [
+            "core_module",
+            "http_module",
+            "so_module",
+            "mpm_prefork_module"
+           ]
+)
+APACHE_UNAUTHORIZED_MODULES= attribute(
+  'apache_unauthorized_modules',
+  description: 'List of  unauthorized apache modules.',
+  default: [
+           ]
+)
+
 control "V-26285" do
   title "Active software modules must be minimized."
   desc  "Modules are the source of Apache httpd servers core and dynamic
@@ -32,5 +49,10 @@ http_module
 so_module
 mpm_prefork_module"
   tag "fix": "Disable any modules that are not needed."
-end
 
+  apache = command("httpd -M").stdout.split
+
+  describe APACHE_AUTHORIZED_MODULES do
+    it { should be_in apache }
+  end
+end

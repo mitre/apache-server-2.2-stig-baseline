@@ -1,3 +1,9 @@
+APACHE_CONF_FILE = attribute(
+  'apache_conf_file',
+  description: 'define path for the apache configuration file',
+  default: "/etc/httpd/conf/httpd.conf"
+)
+
 control "V-13737" do
   title "The HTTP request header fields must be limited. "
   desc  "Buffer overflow attacks are carried out by a malicious attacker
@@ -43,5 +49,8 @@ is a finding.
 "
   tag "fix": "Edit the httpd.conf file and set LimitRequestFields Directive to
 a value greater than 0. "
-end
 
+  describe apache_conf(APACHE_CONF_FILE) do
+    its('LimitRequestFields') { should cmp > 0 }
+  end
+end

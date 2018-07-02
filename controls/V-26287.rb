@@ -1,3 +1,23 @@
+APACHE_AUTHORIZED_MODULES= attribute(
+  'apache_authorized_modules',
+  description: 'List of  authorized apache modules.',
+  default: [
+            "core_module",
+            "http_module",
+            "so_module",
+            "mpm_prefork_module"
+           ]
+)
+APACHE_UNAUTHORIZED_MODULES= attribute(
+  'apache_unauthorized_modules',
+  description: 'List of  unauthorized apache modules.',
+  default: [
+            "dav_module",
+            "dav_fs_module",
+            "dav_lock_module"
+           ]
+)
+
 control "V-26287" do
   title "Web Distributed Authoring and Versioning (WebDAV) must be disabled."
   desc  "The Apache mod_dav and mod_dav_fs modules support WebDAV ('Web-based
@@ -32,5 +52,10 @@ dav_lock_module"
 dav_module
 dav_fs_module
 dav_lock_module"
-end
 
+  apache = command("httpd -M").stdout.split
+
+  describe APACHE_UNAUTHORIZED_MODULES do
+    it { should_not be_in apache }
+  end
+end

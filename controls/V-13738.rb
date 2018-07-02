@@ -1,3 +1,9 @@
+APACHE_CONF_FILE = attribute(
+  'apache_conf_file',
+  description: 'define path for the apache configuration file',
+  default: "/etc/httpd/conf/httpd.conf"
+)
+
 control "V-13738" do
   title "The HTTP request header field size must be limited."
   desc  "Buffer overflow attacks are carried out by a malicious attacker
@@ -42,5 +48,9 @@ If the value of LimitRequestFieldSize is not set to 8190, this is a finding.
 "
   tag "fix": "Edit the httpd.conf file and ensure the LimitRequestFieldSize is
 explicitly configured and set to 8190 or other approved value. "
-end
 
+
+  describe apache_conf(APACHE_CONF_FILE) do
+    its('LimitRequestFieldSize') { should cmp 8190 }
+  end
+end

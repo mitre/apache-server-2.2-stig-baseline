@@ -1,3 +1,22 @@
+APACHE_AUTHORIZED_MODULES= attribute(
+  'apache_authorized_modules',
+  description: 'List of  authorized apache modules.',
+  default: [
+            "core_module",
+            "http_module",
+            "so_module",
+            "mpm_prefork_module"
+           ]
+)
+APACHE_UNAUTHORIZED_MODULES= attribute(
+  'apache_unauthorized_modules',
+  description: 'List of  unauthorized apache modules.',
+  default: [
+            "info_module",
+            "status_module"
+           ]
+)
+
 control "V-26294" do
   title "Web server status module must be disabled."
   desc  "The Apache mod_info module provides information on the server
@@ -32,5 +51,10 @@ info_module
 status_module"
   tag "fix": "Edit the httpd.conf file and disable info_module and
 status_module."
-end
 
+  apache_loaded_modules = command("httpd -M").stdout.split
+
+  describe APACHE_UNAUTHORIZED_MODULES do
+    it { should_not be_in apache_loaded_modules }
+  end
+end

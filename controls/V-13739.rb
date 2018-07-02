@@ -1,3 +1,9 @@
+APACHE_CONF_FILE = attribute(
+  'apache_conf_file',
+  description: 'define path for the apache configuration file',
+  default: "/etc/httpd/conf/httpd.conf"
+)
+
 control "V-13739" do
   title "The HTTP request line must be limited."
   desc  "Buffer overflow attacks are carried out by a malicious attacker
@@ -40,5 +46,8 @@ default value is 8190, this directive must be explicitly set."
   tag "fix": "Edit the httpd.conf file and set the LimitRequestLine to 8190 or
 other approved value. If no LimitRequestLine directives exist, explicitly add
 the directive and set to 8190."
-end
 
+  describe apache_conf(APACHE_CONF_FILE) do
+    its('LimitRequestLine') { should cmp 8190 }
+  end
+end

@@ -1,3 +1,21 @@
+APACHE_AUTHORIZED_MODULES= attribute(
+  'apache_authorized_modules',
+  description: 'List of  authorized apache modules.',
+  default: [
+            "core_module",
+            "http_module",
+            "so_module",
+            "mpm_prefork_module"
+           ]
+)
+APACHE_UNAUTHORIZED_MODULES= attribute(
+  'apache_unauthorized_modules',
+  description: 'List of  unauthorized apache modules.',
+  default: [
+            "userdir_module"
+           ]
+)
+
 control "V-26302" do
   title "User specific directories must not be globally enabled."
   desc  "The UserDir directive must be disabled so that user home directories
@@ -24,5 +42,10 @@ potentially new content available via the web site."
 This will provide a list of all loaded modules. If userdir_module is listed,
 this is a finding."
   tag "fix": "Edit the httpd.conf file and remove userdir_module."
-end
 
+  apache_loaded_modules = command("httpd -M").stdout.split
+
+  describe APACHE_UNAUTHORIZED_MODULES do
+    it { should_not be_in apache_loaded_modules }
+  end
+end
