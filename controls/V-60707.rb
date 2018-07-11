@@ -1,3 +1,9 @@
+APACHE_SSL_FILE = attribute(
+  'apache_ssl_file',
+  description: 'define path for the apache ssl file',
+  default: "/etc/httpd/conf.d/ssl.conf"
+)
+
 control "V-60707" do
   title "The web server must remove all export ciphers from the cipher suite."
   desc  "During the initial setup of a Transport Layer Security (TLS)
@@ -28,5 +34,8 @@ this is a finding.
 "
   tag "fix": "Update the cipher specification string for all enabled
 SSLCipherSuite directives to include !EXPORT."
-end
 
+  describe apache_conf(APACHE_SSL_FILE) do
+    its('SSLCipherSuite') { should include /(!EXPORT|!EXP)/ }
+  end
+end

@@ -54,5 +54,18 @@ Order allow,deny
      Deny from all
 </LimitExcept>
 "
+  describe command("awk '/<Directory \\/>/,/<\\/Directory>/' /etc/httpd/conf/httpd.conf") do
+    its('stdout') { should_not match /Order\s+allow,deny$/ }
+    its('stdout') { should_not match /<LimitExcept GET POST OPTIONS>\nDeny\s+from\s+all\n<\/LimitExcept>/ }
+  end
+  d = command("grep -i '^<Directory' /etc/httpd/conf/httpd.conf |grep -v 'Directory /'").stdout
+  directories = []
+  directories = d.split(/\n/)
+  directories.each { |dir|
+    val_dir = dir.gsub(/\//, "\\/")
+    describe command("awk '/#{val_dir}/,/<\\/Directory>/' /etc/httpd/conf/httpd.conf") do
+      its('stdout') { should match /Order\s+allow,deny$/ }
+      its('stdout') { should match /<LimitExcept GET POST OPTIONS>\nDeny\s+from\s+all\n<\/LimitExcept>/ }
+    end
+  }
 end
-

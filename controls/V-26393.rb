@@ -44,5 +44,7 @@ If the root directory statement is not listed at all, this is a finding.
   tag "fix": "Edit the httpd.conf file and add or set the value of
 AllowOverride to \"None\".
 "
+  describe command("awk '/<Directory \\/>/,/<\\/Directory>/' /etc/httpd/conf/httpd.conf") do
+    its('stdout') { should match /AllowOverride\s+None$/ }
+  end
 end
-
