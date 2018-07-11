@@ -48,5 +48,9 @@ follows:
 Directory
 Order deny,allow
 Deny from all"
-end
 
+  describe command("awk '/<Directory \\/>/,/<\\/Directory>/' /etc/httpd/conf/httpd.conf") do
+    its('stdout') { should match /Order\s+deny,allow$/ }
+    its('stdout') { should match /Deny\s+from\s+all$/ }
+  end
+end

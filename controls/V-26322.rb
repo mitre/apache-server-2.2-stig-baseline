@@ -34,5 +34,12 @@ a finding. "
   tag "fix": "The scoreboard file is created when the server starts, and is
 deleted when it shuts down, set the permissions during the creation of the
 file."
-end
 
+  score_board = command('find / -type f -name ScoreBoard').stdout.strip
+  only_if do
+    file(score_board).exist?
+  end
+  describe file(score_board) do
+    its('mode') { should cmp <= 644 }
+  end
+end

@@ -1,3 +1,27 @@
+APACHE_OWNER = attribute(
+  'apache_owner',
+  description: "The apache owner",
+  default: 'apache'
+)
+
+SYS_ADMIN = attribute(
+  'sys_admin',
+  description: "The system adminstrator",
+  default: ['root']
+)
+
+APACHE_GROUP = attribute(
+  'apache_group',
+  description: "The apache group",
+  default: 'apache'
+)
+
+SYS_ADMIN_GROUP = attribute(
+  'sys_admin_group',
+  description: "The system adminstrator group",
+  default: ['root']
+)
+
 control "V-26305" do
   title "The process ID (PID) file must be properly secured."
   desc  "The PidFile directive sets the file path to the process ID file to
@@ -31,5 +55,23 @@ server have permission to, or ownership of, this folder, this is a finding. If
 the PID file is located in the web server DocumentRoot this is a finding."
   tag "fix": "Modify the location, permissions, and/or ownership for the PID
 file folder. "
-end
 
+  authorized_sa_user_list = SYS_ADMIN.clone << APACHE_OWNER
+  authorized_sa_group_list = SYS_ADMIN_GROUP.clone << APACHE_GROUP
+
+  pid_file =  command('find / -type f -name httpd.pid').stdout.chomp
+  pid_dir = File.dirname("#{pid_file}")
+
+  describe file(pid_file) do
+    it { should exist }
+    its('owner') { should be_in authorized_sa_user_list }
+    its('group') { should be_in authorized_sa_group_list }
+    its ('mode')  { should cmp <= 0660 }
+  end
+
+  describe file(pid_dir) do
+    it { should exist }
+    its('owner') { should be_in authorized_sa_user_list }
+    its('group') { should be_in authorized_sa_group_list }
+  end
+end

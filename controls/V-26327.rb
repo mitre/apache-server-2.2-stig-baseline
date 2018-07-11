@@ -24,5 +24,16 @@ file-path or directory-path entries, this is a finding.
 "
   tag "fix": "Edit the httpd.conf file and set the ScriptAlias URL-path and
 file-path or directory-path entries."
-end
 
+  entries = apache_conf('/etc/httpd/conf/httpd.conf').ScriptAlias
+  entries.each { |entry|
+    describe entry do
+      it { should match /\/.+\/\s+"\/.+\/"/ }
+    end
+    url_path = command("echo #{entry} | awk '{print $1}'").stdout.chomp
+    file_path = command("echo #{entry} | awk '{print $2}'").stdout.chomp
+    describe file_path do
+      it { should match url_path }
+    end
+  } unless entries.nil?
+end

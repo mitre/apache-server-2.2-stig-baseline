@@ -1,3 +1,9 @@
+APACHE_CONF_FILE = attribute(
+  'apache_conf_file',
+  description: 'define path for the apache configuration file',
+  default: "/etc/httpd/conf/httpd.conf"
+)
+
 control "V-26325" do
   title "The TRACE  method must be disabled."
   desc  "Diagnostics help establish a history of activities, and can be useful
@@ -37,5 +43,9 @@ default value is \"On\".
 "
   tag "fix": "Edit the httpd.conf file and add or set the value of EnableTrace
 to \"Off\"."
-end
 
+
+  describe apache_conf(APACHE_CONF_FILE) do
+    its('EnableTrace') { should cmp "Off" }
+  end
+end

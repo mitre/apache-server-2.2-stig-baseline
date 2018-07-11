@@ -38,5 +38,8 @@ finding.
 
 If the root directory statement is not found at all, this is a finding."
   tag "fix": "Ensure the root directory has the appropriate Options assignment."
-end
 
+  describe command("awk '/<Directory \\/>/,/<\\/Directory>/' /etc/httpd/conf/httpd.conf") do
+    its('stdout') { should match /Options\s+None$/ }
+  end
+end

@@ -1,3 +1,17 @@
+APACHE_AUTHORIZED_MODULES= attribute(
+  'apache_authorized_modules',
+  description: 'List of  authorized apache modules.',
+  default: [
+           ]
+)
+APACHE_UNAUTHORIZED_MODULES= attribute(
+  'apache_unauthorized_modules',
+  description: 'List of  unauthorized apache modules.',
+  default: [
+            "autoindex_module"
+           ]
+)
+
 control "V-26368" do
   title "Automatic directory indexing must be disabled."
   desc  "To identify the type of web servers and versions software installed it
@@ -23,5 +37,10 @@ indexing, which is recommended to be disabled."
 This will provide a list of all loaded modules. If autoindex_module is found,
 this is a finding."
   tag "fix": "Edit the httpd.conf file and remove autoindex_module."
-end
 
+  apache = command("httpd -M").stdout.split
+
+  describe APACHE_UNAUTHORIZED_MODULES do
+    it { should_not be_in apache }
+  end
+end
