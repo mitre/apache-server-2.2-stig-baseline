@@ -50,4 +50,9 @@ Remove the ‘Includes’ or ‘+Includes’ setting from the options statement.
   describe command("cat #{APACHE_CONF_FILE} | grep '^\s*Options +IncludesNoExec$'") do
     its('stdout') { should include 'Options +IncludesNoExec' }
   end
+
+  describe command("cat #{APACHE_CONF_FILE} | grep '^\s*Options None$'") do
+    its('stdout') { should include 'Options None' }
+  end
+
 end

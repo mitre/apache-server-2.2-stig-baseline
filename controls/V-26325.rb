@@ -46,6 +46,6 @@ to \"Off\"."
 
 
   describe apache_conf(APACHE_CONF_FILE) do
-    its('EnableTrace') { should cmp "Off" }
+    its('TraceEnable') { should cmp "Off" }
   end
 end
