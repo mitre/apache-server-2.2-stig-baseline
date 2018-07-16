@@ -4,6 +4,18 @@ APACHE_CONF_FILE = attribute(
   default: "/etc/httpd/conf/httpd.conf"
 )
 
+APPROVED_OPTIONS = attribute(
+  'approved_options',
+  description: 'List of approved options settings',
+  default: ['+IncludesNoExec', '-IncludesNoExec', '-Includes', 'None']
+)
+
+UNAPPROVED_OPTIONS = attribute(
+  'unapproved_options',
+  description: 'List of unapproved options settings',
+  default: ['Includes', '+Includes']
+)
+
 control "V-13733" do
   title "Server side includes (SSIs) must run with execution capability
 disabled."
@@ -47,12 +59,8 @@ enabled Options directive:
 
 Remove the ‘Includes’ or ‘+Includes’ setting from the options statement. "
 
-  describe command("cat #{APACHE_CONF_FILE} | grep '^\s*Options +IncludesNoExec$'") do
-    its('stdout') { should include 'Options +IncludesNoExec' }
+  describe apache_conf(APACHE_CONF_FILE) do
+    its('Options') { should be_in APPROVED_OPTIONS }
+    its('Options') { should_not be_in UNAPPROVED_OPTIONS }
   end
-
-  describe command("cat #{APACHE_CONF_FILE} | grep '^\s*Options None$'") do
-    its('stdout') { should include 'Options None' }
-  end
-
 end

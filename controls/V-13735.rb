@@ -4,6 +4,18 @@ APACHE_CONF_FILE = attribute(
   default: "/etc/httpd/conf/httpd.conf"
 )
 
+APPROVED_OPTIONS = attribute(
+  'approved_options',
+  description: 'List of approved options settings',
+  default: ['-Indexes', 'None']
+)
+
+UNAPPROVED_OPTIONS = attribute(
+  'unapproved_options',
+  description: 'List of unapproved options settings',
+  default: ['Indexes']
+)
+
 control "V-13735" do
   title "Directory indexing must be disabled on directories not containing
 index files."
@@ -38,7 +50,8 @@ Notes:
   tag "fix": "Edit the httpd.conf file and add an \"-\" to the Indexes setting,
 or set the options directive to None. "
 
-  describe command("cat #{APACHE_CONF_FILE} | grep '^\s*Options -Indexes$'") do
-    its('stdout') { should include 'Options -Indexes' }
+  describe apache_conf(APACHE_CONF_FILE) do
+    its('Options') { should be_in APPROVED_OPTIONS }
+    its('Options') { should_not be_in UNAPPROVED_OPTIONS }
   end
 end

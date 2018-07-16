@@ -4,6 +4,18 @@ APACHE_CONF_FILE = attribute(
   default: "/etc/httpd/conf/httpd.conf"
 )
 
+APPROVED_OPTIONS = attribute(
+  'approved_options',
+  description: 'List of approved options settings',
+  default: ['-FollowSymLinks', 'None']
+)
+
+UNAPPROVED_OPTIONS = attribute(
+  'unapproved_options',
+  description: 'List of unapproved options settings',
+  default: ['FollowSymLinks']
+)
+
 control "V-13732" do
   title "The \"–FollowSymLinks” setting must be disabled.
 
@@ -43,6 +55,7 @@ Notes:
 to \"-FollowSymLinks\"."
 
   describe apache_conf(APACHE_CONF_FILE) do
-    its('Options') { should cmp "-FollowSymLinks" }
+    its('Options') { should be_in APPROVED_OPTIONS }
+    its('Options') { should_not be_in UNAPPROVED_OPTIONS }
   end
 end

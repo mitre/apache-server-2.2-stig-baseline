@@ -4,6 +4,19 @@ APACHE_CONF_FILE = attribute(
   default: "/etc/httpd/conf/httpd.conf"
 )
 
+APPROVED_OPTIONS = attribute(
+  'approved_options',
+  description: 'List of approved options settings',
+  default: ['-MultiView', 'None']
+)
+
+UNAPPROVED_OPTIONS = attribute(
+  'unapproved_options',
+  description: 'List of unapproved options settings',
+  default: ['MultiView']
+)
+
+
 control "V-13734" do
   title "The MultiViews directive must be disabled."
   desc  "Directory options directives are directives that can be applied to
@@ -44,7 +57,8 @@ Notes:
 setting, or set the options directive to None.
 "
 
-  describe command("cat #{APACHE_CONF_FILE} | grep '^\s*Options -MultiView$'") do
-    its('stdout') { should include 'Options -MultiView' }
+  describe apache_conf(APACHE_CONF_FILE) do
+    its('Options') { should be_in APPROVED_OPTIONS }
+    its('Options') { should_not be_in UNAPPROVED_OPTIONS }
   end
 end

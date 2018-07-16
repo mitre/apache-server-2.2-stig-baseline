@@ -48,6 +48,6 @@ listen on a specific IP address and port. "
   describe apache_conf(APACHE_CONF_FILE).Listen do
     it { should_not cmp '0.0.0.0' }
     it { should_not cmp '[::ffff:0.0.0.0]' }
-    it { should match %r([0-9]+(?:\.[0-9]+){3}|[a-zA-Z]:[0-9]+) }
+    it { should cmp /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(\d{1,5})/ }
   end
 end

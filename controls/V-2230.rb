@@ -70,24 +70,6 @@ begin
 
   apache_conf_handle = apache_conf(APACHE_CONF_FILE)
 
-  describe apache_conf_handle do
-    its ('params') { should_not be_empty }
-  end
-
-  apache_conf_handle.http.entries.each do |http|
-    dirs.push(http.params['root']) unless http.params['root'].nil?
-  end
-
-  apache_conf_handle.servers.entries.each do |server|
-    dirs.push(server.params['root']) unless server.params['root'].nil?
-  end
-
-  apache_conf_handle.locations.entries.each do |location|
-    dirs.push(location.params['root']) unless location.params['root'].nil?
-  end
-
-  dirs.flatten!.uniq!
-
   dirs.each do |dir|
     next unless directory(dir).exist?
     describe "List of backup NINGX and/or CGI scripts found in #{dir}" do

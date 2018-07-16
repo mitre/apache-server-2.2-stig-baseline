@@ -77,15 +77,14 @@ however, the group permissions represent those of the user accessing the web
 site that must execute the directives in .htacces."
 
   begin
-
+    apache_conf_handle = apache_conf(APACHE_CONF_FILE)
     authorized_sa_user_list = SYS_ADMIN.clone << APACHE_OWNER
     authorized_sa_group_list = SYS_ADMIN_GROUP.clone << APACHE_GROUP
-    doc_root = apache_conf("#{APACHE_CONF_FILE}").DocumentRoot.map{ |element| element.gsub(/"/, '') }[0]
+    doc_root = apache_conf_handle.DocumentRoot.map{ |element| element.gsub(/"/, '') }[0]
 
     access_control_files = [ '.htaccess',
                             '.htpasswd']
 
-    apache_conf_handle = apache_conf(APACHE_CONF_FILE)
     apache_conf_handle.params
 
     describe apache_conf_handle do
@@ -110,27 +109,11 @@ site that must execute the directives in .htacces."
       end
     end
 
-    describe file(apache_conf_handle) do
+    describe file(APACHE_CONF_FILE) do
       its('owner') { should be_in authorized_sa_user_list }
       its('group') { should be_in authorized_sa_group_list }
       its('mode')  { should cmp <= 0660 }
     end
-
-    # webserver_roots = []
-    #
-    # apache_conf_handle.http.entries.each do |http|
-    #   webserver_roots.push(http.params['root']) unless http.params['root'].nil?
-    # end
-    #
-    # apache_conf_handle.servers.entries.each do |server|
-    #   webserver_roots.push(server.params['root']) unless server.params['root'].nil?
-    # end
-    #
-    # apache_conf_handle.locations.entries.each do |location|
-    #   webserver_roots.push(location.params['root']) unless location.params['root'].nil?
-    # end
-    #
-    # webserver_roots.flatten!.uniq!
 
       describe file(doc_root) do
         its('owner') { should be_in authorized_sa_user_list }

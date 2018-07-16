@@ -76,7 +76,7 @@ manager and the web manager’s designees."
       its ('params') { should_not be_empty }
     end
 
-    describe file(apache_conf_handle) do
+    describe file(APACHE_CONF_FILE) do
       its('owner') { should be_in authorized_sa_user_list }
       its('group') { should be_in authorized_sa_group_list }
       its('mode')  { should cmp <= 0660 }

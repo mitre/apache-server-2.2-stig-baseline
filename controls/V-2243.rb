@@ -39,27 +39,19 @@ via a controlled access mechanism from the local general population LAN."
   tag "fix": "Isolate the private web server from the public DMZ and separate
 it from the internal general population LAN. "
 
-  begin
-    apache_conf_handle = apache_conf(APACHE_CONF_FILE)
+begin
+  describe apache_conf(APACHE_CONF_FILE) do
+    its('Listen') { should cmp /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(\d{1,5})/ }
+  end
 
-    describe apache_conf_handle do
-      its ('params') { should_not be_empty }
-    end
+  apache_httpd = apache_conf(APACHE_CONF_FILE)
+  server_ip = apache_httpd.Listen.join.split(':').first
+  server_ip = server_ip.eql?('localhost') ? '127.0.0.1' : server_ip
 
-    apache_conf_handle.servers.entries.each do |server|
-      server.params['listen'].each do |listen|
-        describe listen.join do
-          it { should match %r([0-9]+(?:\.[0-9]+){3}|[a-zA-Z]:[0-9]+) }
-        end
-        server_ip = listen.join.split(':').first
-        server_ip = server_ip.eql?('localhost') ? '127.0.0.1' : server_ip
+  describe IPAddr.new(DMZ_SUBNET) === IPAddr.new(server_ip) do
+    it { should be false }
+  end unless (IPAddr.new(server_ip) rescue nil).nil?
 
-        describe IPAddr.new(DMZ_SUBNET) === IPAddr.new(server_ip) do
-          it { should be false}
-        end unless (IPAddr.new(server_ip) rescue nil).nil?
-
-      end unless server.params['listen'].nil?
-    end
 
   rescue Exception => msg
     describe "Exception: #{msg}" do
