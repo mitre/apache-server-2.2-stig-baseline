@@ -45,6 +45,6 @@ If the root directory statement is not listed at all, this is a finding.
 AllowOverride to \"None\".
 "
   describe command("awk '/<Directory \\/>/,/<\\/Directory>/' /etc/httpd/conf/httpd.conf") do
-    its('stdout') { should match /AllowOverride\s+None$/ }
+    its('stdout') { should match "AllowOverride None" }
   end
 end
