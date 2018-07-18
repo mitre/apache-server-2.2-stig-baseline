@@ -33,8 +33,4 @@ has been configured to accept inbound email, this is a finding.\"
   describe package("telnet") do
     it { should_not be_installed }
   end
-
-  describe port(25) do
-    it { should_not be_listening }
-  end
 end
