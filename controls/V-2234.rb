@@ -40,5 +40,7 @@ etc.) are shared with the public web server, then this is a finding.
 relationship with any system resource that is also not accessible to the
 public. Web content is not to be shared via Microsoft shares or NFS mounts."
 
-  only_if { false } # this will always skip
+  describe "This test currently has no automated tests, you must check manually" do
+    skip "This check must be preformed manually"
+  end
 end

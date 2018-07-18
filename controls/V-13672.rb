@@ -42,5 +42,8 @@ used, this is a finding."
   tag "fix": "Configure DoD Private Web Servers to conduct certificate
 revocation checking utilizing certificate revocation lists (CRLs) or Online
 Certificate Status Protocol (OCSP)."
-end
 
+  describe "This test currently has no automated tests, you must check manually" do
+    skip "This check must be preformed manually"
+  end
+end
