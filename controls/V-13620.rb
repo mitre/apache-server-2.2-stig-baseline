@@ -46,5 +46,8 @@ Administrator Guide (SAG), dated 8 Jul 2008, contains a complete list of DoD,
 ECA, and IECA CAs."
   tag "fix": "Configure the web server’s trust store to trust only DoD-approved
 PKIs (e.g., DoD PKI, DoD ECA, and DoD-approved external partners)."
-end
 
+  describe "This test currently has no automated tests, you must check manually" do
+    skip "This check must be preformed manually"
+  end
+end
