@@ -1,4 +1,12 @@
-Benchmark: APACHE SERVER 2.2 for Unix Security Technical Implementation Guide
+name: apache_server_baseline
+title: APACHE SERVER 2.2 for Unix Baseline 
+maintainer: MITRE InSpec Team
+copyright: MITRE InSpec Team
+copyright_email: inspec@mitre.org
+license: Apache 2.0
+summary: Baseline Apache Server security testing
+############ STIG info
+Benchmark: APACHE SITE 2.2 for Unix Security Technical Implementation Guide
 Status: accepted
 # Description: >
 #
