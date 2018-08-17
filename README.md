@@ -1,10 +1,10 @@
-# apache_site_baseline
+# apache_server_baseline
 
 Baseline InSpec profile testing configuration of Apache HTTPD Server per Apache site 2.2 STIG
 
 ## Description
 
-This InSpec compliance profile is a collection of automated tests for Apache site compliance with the [DISA Apache 2.2 STIG](https://iasecontent.disa.mil/stigs/zip/U_Apache_2-2_UNIX_V1R10_STIG.zip).
+This InSpec compliance profile is a collection of automated tests for Apache server compliance with the [DISA Apache 2.2 STIG](https://iasecontent.disa.mil/stigs/zip/U_Apache_2-2_UNIX_V1R10_STIG.zip).
 
 InSpec is an open-source run-time framework and rule language used to specify compliance, security, and policy requirements for testing any node in your infrastructure.
 
@@ -16,29 +16,40 @@ InSpec is an open-source run-time framework and rule language used to specify co
 - Linux server, to test
 
 ## Usage
-InSpec makes it easy to run tests wherever you need. More options listed here: [InSpec cli](http://inspec.io/docs/reference/cli/)
+Use InSpec to run this profile to check compliance with the the DISA Apache 
+site 2.2 STIG. InSpec makes it easy to run tests wherever you need. More options 
+listed here: [InSpec cli](http://inspec.io/docs/reference/cli/)
 
-### Run with remote profile:
+### Run with locally download profile
+The locally downloaded profile is the preferred way to use this profile as it 
+allows you to setup a consistent attributes.yml
+
+These commands can be run from any command prompt/terminal with inspec installed 
+and git
+
+``` bash
+# Clone Inspec Profile
+$ git clone https://gitlab.mitre.org/inspec/apache_server_baseline.git
+
+# Run profile locally (assuming you have not changed directories since cloning)
+# This will display compliance level at the prompt, and generate a JSON file 
+# for export called output.json
+$ inspec exec apache_server_baseline --reporter cli json:output.json
+
+# Run profile with custom settings defined in attributes.yml against the target 
+# server example.com. 
+$ inspec exec apache_server_baseline -t ssh://user@password:example.com --attrs attributes.yml --reporter cli json:output.json
+
+# Run profile with: custom attributes, ssh keyed into a custom target, and sudo.
+$ inspec exec apache_server_baseline -t ssh://user@hostname -i /path/to/key --sudo --attrs attributes.yml --reporter cli json:output.json
+```
+
+### Run with remote profile
 You may choose to run the profile via a remote url, this has the advantage of always being up to date.
 The disadvantage is you may wish to modify controls, which is only possible when downloaded.
 Also, the remote profile is unintuitive for passing in attributes, which modify the default values of the profile.
 ``` bash
-inspec exec https://gitlab.mitre.org/inspec/apache_site_baseline/repository/master/archive.tar.gz
-```
-
-Another option is to download the profile then run it, this allows you to edit specific instructions and view the profile code.
-``` bash
-# Clone Inspec Profile
-$ git clone https://gitlab.mitre.org/inspec/apache_site_baseline.git
-
-# Run profile locally (assuming you have not changed directories since cloning)
-$ inspec exec apache_site_baseline
-
-# Run profile locally with custom settings defined in attributes.yml
-$ inspec exec apache_site_bsaeline --attrs attributes.yml
-
-# Alternatively, run a single test
-$ inspec exec apache_site_baseline --controls a_control_name
+inspec exec https://gitlab.mitre.org/inspec/apache_server_baseline/repository/master/archive.tar.gz
 ```
 
 ## Attributes (Configuration)
@@ -89,3 +100,4 @@ apache_owner: 'apache'
 ### License 
 
 * This project is licensed under the terms of the Apache license 2.0 (apache-2.0)
+
