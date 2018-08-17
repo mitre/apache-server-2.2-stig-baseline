@@ -20,7 +20,7 @@ Use InSpec to run this profile to check compliance with the the DISA Apache
 site 2.2 STIG. InSpec makes it easy to run tests wherever you need. More options 
 listed here: [InSpec cli](http://inspec.io/docs/reference/cli/)
 
-### Run with locally download profile
+#### Run with locally download profile
 The locally downloaded profile is the preferred way to use this profile as it 
 allows you to setup a consistent attributes.yml
 
@@ -44,7 +44,7 @@ $ inspec exec apache_server_baseline -t ssh://user@password:example.com --attrs 
 $ inspec exec apache_server_baseline -t ssh://user@hostname -i /path/to/key --sudo --attrs attributes.yml --reporter cli json:output.json
 ```
 
-### Run with remote profile
+#### Run with remote profile
 You may choose to run the profile via a remote url, this has the advantage of always being up to date.
 The disadvantage is you may wish to modify controls, which is only possible when downloaded.
 Also, the remote profile is unintuitive for passing in attributes, which modify the default values of the profile.
