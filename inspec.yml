@@ -4,5 +4,8 @@ maintainer: MITRE InSpec Team
 copyright: MITRE InSpec Team
 copyright_email: inspec@mitre.org
 license: Apache-2.0
-summary: Baseline Apache Server security testing
+summary: InSpec testing for baseline compliance with Apache server 2.2 STIG
+description: >
+  An InSpec profile verifying compliance with Apacher server 2.2 STIG
+  https://iasecontent.disa.mil/stigs/zip/U_Apache_2-2_UNIX_V1R10_STIG.zip
 version: 0.1.0
