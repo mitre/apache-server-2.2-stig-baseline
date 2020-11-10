@@ -34,14 +34,14 @@ $ git clone https://github.com/mitre/apache-server-2.2-stig-baseline.git
 # Run profile locally (assuming you have not changed directories since cloning)
 # This will display compliance level at the prompt, and generate a JSON file 
 # for export called output.json
-$ inspec exec apache_server_baseline --reporter cli json:output.json
+$ inspec exec apache-server-2.2-stig-baseline --reporter cli json:output.json
 
 # Run profile with custom settings defined in attributes.yml against the target 
 # server example.com. 
-$ inspec exec apache_server_baseline -t ssh://user@password:example.com --attrs attributes.yml --reporter cli json:output.json
+$ inspec exec apache-server-2.2-stig-baseline -t ssh://user@password:example.com --attrs attributes.yml --reporter cli json:output.json
 
 # Run profile with: custom attributes, ssh keyed into a custom target, and sudo.
-$ inspec exec apache_server_baseline -t ssh://user@hostname -i /path/to/key --sudo --attrs attributes.yml --reporter cli json:output.json
+$ inspec exec apache-server-2.2-stig-baseline -t ssh://user@hostname -i /path/to/key --sudo --attrs attributes.yml --reporter cli json:output.json
 ```
 
 #### Run with remote profile
