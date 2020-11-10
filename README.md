@@ -29,7 +29,7 @@ and git
 
 ``` bash
 # Clone Inspec Profile
-$ git clone https://gitlab.mitre.org/inspec/apache_server_baseline.git
+$ git clone https://github.com/mitre/apache-server-2.2-stig-baseline.git
 
 # Run profile locally (assuming you have not changed directories since cloning)
 # This will display compliance level at the prompt, and generate a JSON file 
