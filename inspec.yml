@@ -1,12 +1,9 @@
-name: apache_server_baseline
-title: APACHE SERVER 2.2 for Unix Baseline 
+name: apache-server-2.2-stig-baseline
+title: apache-server-2.2-stig-baseline
 maintainer: MITRE InSpec Team
 copyright: MITRE InSpec Team
 copyright_email: inspec@mitre.org
 license: Apache-2.0
-summary: InSpec testing for baseline compliance with Apache server 2.2 STIG
-description: >
-  An InSpec profile verifying compliance with Apacher server 2.2 STIG
-  https://iasecontent.disa.mil/stigs/zip/U_Apache_2-2_UNIX_V1R10_STIG.zip
-version: 0.1.0
+summary: "Inspec Validation Profile for Apache server 2.2 STIG"
+version: 0.1.1
 inspec_version: ">= 4.0"
