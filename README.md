@@ -1,113 +1,102 @@
-# apache_server_baseline
+# apache-server-2.2-stig-baseline
 
-Baseline InSpec profile testing configuration of Apache HTTPD Server per Apache site 2.2 STIG
+InSpec Profile to validate the secure configuration of apache-server-2.2-stig-baseline, against [DISA's](https://iase.disa.mil/stigs/Pages/index.aspx) Apache HTTPD Server per Apache site 2.2 STIG Ver 1, Rel 10
 
-## Description
+## Getting Started  
+It is intended and recommended that InSpec run this profile from a __"runner"__ host (such as a DevOps orchestration server, an administrative management system, or a developer's workstation/laptop) against the target remotely over __ssh__.
 
-This InSpec compliance profile is a collection of automated tests for Apache server compliance with the [DISA Apache 2.2 STIG](https://iasecontent.disa.mil/stigs/zip/U_Apache_2-2_UNIX_V1R10_STIG.zip).
+The latest versions and installation options are available at the [InSpec](http://inspec.io/) site.
 
-InSpec is an open-source run-time framework and rule language used to specify compliance, security, and policy requirements for testing any node in your infrastructure.
-
-## Requirements
-
-- [ruby](https://www.ruby-lang.org/en/) at least 2.4
-- [InSpec](http://inspec.io/) at least version 2.1
-    - Install via ruby gem: `gem install inspec`
-- Linux server, to test
-
-## Usage
-Use InSpec to run this profile to check compliance with the the DISA Apache 
-site 2.2 STIG. InSpec makes it easy to run tests wherever you need. More options 
-listed here: [InSpec cli](http://inspec.io/docs/reference/cli/)
-
-#### Run with locally download profile
-The locally downloaded profile is the preferred way to use this profile as it 
-allows you to setup a consistent attributes.yml
-
-These commands can be run from any command prompt/terminal with inspec installed 
-and git
-
-``` bash
-# Clone Inspec Profile
-$ git clone https://github.com/mitre/apache-server-2.2-stig-baseline.git
-
-# Run profile locally (assuming you have not changed directories since cloning)
-# This will display compliance level at the prompt, and generate a JSON file 
-# for export called output.json
-$ inspec exec apache-server-2.2-stig-baseline --reporter cli json:output.json
-
-# Run profile with custom settings defined in attributes.yml against the target 
-# server example.com. 
-$ inspec exec apache-server-2.2-stig-baseline -t ssh://user@password:example.com --attrs attributes.yml --reporter cli json:output.json
-
-# Run profile with: custom attributes, ssh keyed into a custom target, and sudo.
-$ inspec exec apache-server-2.2-stig-baseline -t ssh://user@hostname -i /path/to/key --sudo --attrs attributes.yml --reporter cli json:output.json
-```
-
-#### Run with remote profile
-You may choose to run the profile via a remote url, this has the advantage of always being up to date.
-The disadvantage is you may wish to modify controls, which is only possible when downloaded.
-Also, the remote profile is unintuitive for passing in attributes, which modify the default values of the profile.
-``` bash
-inspec exec https://gitlab.mitre.org/inspec/apache_server_baseline/repository/master/archive.tar.gz
-```
-
-## Attributes (Configuration)
-You may alter the default settings of the profile by creating/modifying a yaml 
-encoded 'attributes' file. The following yaml code details the currently 
-supported attributes, and can also be viewed as the attributes.yml file in this 
-repository.
+## Tailoring to Your Environment
+The following inputs must be configured in an inputs ".yml" file for the profile to run correctly for your specific environment. More information about InSpec inputs can be found in the [InSpec Profile Documentation](https://www.inspec.io/docs/reference/profiles/).
 
 ``` yaml
 # Description: Apache home Directory
-apache_home: '/etc/httpd/'
+apache_home: ''
 
 # Description: Apache conf Directory
-apache_conf_dir: '/etc/httpd/conf'
+apache_conf_dir: ''
 
 # Description: Apache library Directory
-apache_lib_dir: '/usr/share/java/apache'
+apache_lib_dir: ''
 
 # Description: Apache service Name
-apache_service_name: 'httpd'
+apache_service_name: ''
 
 # Description: apache username
-apache_user: 'apache'
+apache_user: ''
 
 # Description: Port of the apache instance
-apache_port: '8084'
+apache_port: ''
 
 # Description: Group owner of files/directories
-apache_group: 'apache'
+apache_group: ''
 
 # Description: User owner of files/directories
-apache_owner: 'apache'
+apache_owner: ''
 ```
 
-## Contributors + Kudos
+# Running This Baseline Directly from Github
 
-- Craig Chaffee
-- Nikhil Sharma
-- The MITRE InSpec Team
+```
+# How to run
+inspec exec https://github.com/mitre/apache-server-2.2-stig-baseline/archive/master.tar.gz -t ssh:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+```
 
-## License and Author
+### Different Run Options
 
-### Authors
+  [Full exec options](https://docs.chef.io/inspec/cli/#options-3)
 
-- Author:: Craig Chaffee
-- Author:: Nikhil Sharma
+## Running This Baseline from a local Archive copy 
 
-### License 
+If your runner is not always expected to have direct access to GitHub, use the following steps to create an archive bundle of this baseline and all of its dependent tests:
 
-* This project is licensed under the terms of the Apache license 2.0 (apache-2.0)
+(Git is required to clone the InSpec profile using the instructions below. Git can be downloaded from the [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) site.)
 
-### NOTICE  
+When the __"runner"__ host uses this profile baseline for the first time, follow these steps: 
 
-© 2020 The MITRE Corporation.  
+```
+mkdir profiles
+cd profiles
+git clone https://github.com/mitre/apache-server-2.2-stig-baseline
+inspec archive apache-server-2.2-stig-baseline
+inspec exec <name of generated archive> -t ssh:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+```
+For every successive run, follow these steps to always have the latest version of this baseline:
 
-Approved for Public Release; Distribution Unlimited. Case Number 18-3678.  
+```
+cd apache-server-2.2-stig-baseline
+git pull
+cd ..
+inspec archive apache-server-2.2-stig-baseline --overwrite
+inspec exec <name of generated archive> -t ssh:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+```
+
+## Viewing the JSON Results
+
+The JSON results output file can be loaded into __[heimdall-lite](https://heimdall-lite.mitre.org/)__ for a user-interactive, graphical view of the InSpec results. 
+
+The JSON InSpec results file may also be loaded into a __[full heimdall server](https://github.com/mitre/heimdall)__, allowing for additional functionality such as to store and compare multiple profile runs.
+
+## Authors
+* Craig Chaffee
+* Nikhil Sharma
+
+## Special Thanks 
+* Mohamed El-Sharkawi - [HackerShark](https://github.com/HackerShark)
+* Shivani Karikar - [karikarshivani](https://github.com/karikarshivani)
+
+## Contributing and Getting Help
+To report a bug or feature request, please open an [issue](https://github.com/mitre/apache-server-2.2-stig-baseline/issues/new).
 
 ### NOTICE
+
+© 2018-2020 The MITRE Corporation.
+
+Approved for Public Release; Distribution Unlimited. Case Number 18-3678.
+
+### NOTICE
+
 MITRE hereby grants express written permission to use, reproduce, distribute, modify, and otherwise leverage this software to the extent permitted by the licensed terms provided in the LICENSE.md file included with this project.
 
 ### NOTICE  
