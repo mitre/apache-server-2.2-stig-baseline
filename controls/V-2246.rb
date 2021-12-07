@@ -50,13 +50,19 @@ version of the web server is supported, this would not be a finding.
   tag "fix": "Install the current version of the web server software and
 maintain appropriate service packs and patches."
 
-  begin
-    describe package('httpd') do
-      its('version') { should cmp >= '2.2.31' }
-    end
-  rescue Exception => msg
-    describe "Exception: #{msg}" do
-      it { should be_nil }
-    end
-  end
+  version = command('httpd -v').stdout.lines.first.split('/').last.split( ).first
+
+   describe version do
+        it {should cmp >= '2.2.31'}
+   end
+  
+#  begin
+#    describe package('httpd') do
+#      its('version') { should cmp >= '2.2.31' }
+#    end
+#  rescue Exception => msg
+#    describe "Exception: #{msg}" do
+#      it { should be_nil }
+#    end
+#  end
 end
