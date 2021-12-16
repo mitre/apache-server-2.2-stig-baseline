@@ -1,4 +1,4 @@
-# apache-server-2.2-stig-baseline
+# apache-server-2.2-stig-baseline 
 
 InSpec Profile to validate the secure configuration of apache-server-2.2-stig-baseline, against [DISA's](https://iase.disa.mil/stigs/Pages/index.aspx) Apache HTTPD Server per Apache site 2.2 STIG Ver 1, Rel 10
 
