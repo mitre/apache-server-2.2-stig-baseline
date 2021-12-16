@@ -25,7 +25,14 @@ file-path or directory-path entries, this is a finding.
   tag "fix": "Edit the httpd.conf file and set the ScriptAlias URL-path and
 file-path or directory-path entries."
 
-  entries = apache_conf('/etc/httpd/conf/httpd.conf').ScriptAlias
+  
+APACHE_CONF_DIR= attribute(
+  'apache_conf_dir',
+  description: 'location of apache conf directory',
+  default: '/etc/httpd/conf'
+)
+
+  entries = apache_conf(input('apache_conf_file')).ScriptAlias
   entries.each { |entry|
     describe entry do
       it { should match /\/.+\/\s+"\/.+\/"/ }
