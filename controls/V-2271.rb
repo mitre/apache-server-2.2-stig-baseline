@@ -43,10 +43,18 @@ that would identify a change in the file.
 "
 
   begin
-    describe.one do
-      MONITORINGSOFTWARE.each do |software|
-        describe package(software) do
-          it{ should be_installed }
+    if virtualization.system == 'docker'
+      describe "Since this apache instance is running in a container, perform manual review to determine if and how the system monitors changes to the CGI or
+  equivalent directory." do
+      skip "Since this apache instance is running in a container, perform manual review to determine if and how the system monitors changes to the CGI or
+  equivalent directory." 
+      end
+    else
+      describe.one do
+        MONITORINGSOFTWARE.each do |software|
+          describe package(software) do
+            it{ should be_installed }
+          end
         end
       end
     end
