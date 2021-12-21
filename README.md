@@ -40,13 +40,13 @@ apache_owner: ''
 
 # Running This Baseline Directly from Github
 
-Against a _**locally-hosted**_ instance (i.e., InSpec installed on the target)
+Against a _**locally-hosted**_ instance (i.e., InSpec installed on the target host)
 ```
 inspec exec https://github.com/mitre/apache-server-2.2-stig-baseline/archive/master.tar.gz --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 Against a _**docker-containerized**_ instance (i.e., InSpec installed on the node hosting the container):
 ```
-inspec exec https://github.com/mitre/apache-server-2.2-stig-baseline/archive/master.tar.gz -t docker://instance_id --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+inspec exec https://github.com/mitre/apache-server-2.2-stig-baseline/archive/master.tar.gz -t docker://<instance_id> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 
 
@@ -67,7 +67,7 @@ mkdir profiles
 cd profiles
 git clone https://github.com/mitre/apache-server-2.2-stig-baseline
 inspec archive apache-server-2.2-stig-baseline
-inspec exec <name of generated archive> -t ssh:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+inspec exec <name of generated archive> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 For every successive run, follow these steps to always have the latest version of this baseline:
 
@@ -76,7 +76,7 @@ cd apache-server-2.2-stig-baseline
 git pull
 cd ..
 inspec archive apache-server-2.2-stig-baseline --overwrite
-inspec exec <name of generated archive> -t ssh:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+inspec exec <name of generated archive> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 
 ## Viewing the JSON Results
