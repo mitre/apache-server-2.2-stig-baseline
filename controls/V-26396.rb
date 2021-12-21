@@ -54,7 +54,14 @@ Order allow,deny
      Deny from all
 </LimitExcept>
 "
-  describe command("awk '/<Directory \\/>/,/<\\/Directory>/' /etc/httpd/conf/httpd.conf") do
+  
+APACHE_CONF_DIR= attribute(
+  'apache_conf_dir',
+  description: 'location of apache conf directory',
+  default: '/etc/httpd/conf'
+)
+ 
+  describe command("awk '/<Directory \\/>/,/<\\/Directory>/' #{input('apache_conf_file')}") do
     its('stdout') { should_not match "Order allow,deny" }
     # its('stdout') { should_not match /<LimitExcept GET POST OPTIONS>\nDeny\s+from\s+all\n<\/LimitExcept>/ }
   end
@@ -64,7 +71,7 @@ Order allow,deny
   directories.each { |dir|
     val_dir = dir.gsub(/\//, "\\/")
 
-    describe command("awk '/#{val_dir}/,/<\\/Directory>/' /etc/httpd/conf/httpd.conf").stdout.split("\n").map(&:strip) do
+    describe command("awk '/#{val_dir}/,/<\\/Directory>/' #{input('apache_conf_file')}").stdout.split("\n").map(&:strip) do
       it { should include "Order allow,deny" }
       it { should include "<LimitExcept GET POST OPTIONS>" }
       it { should include "</LimitExcept>" }

@@ -1,10 +1,12 @@
-# apache-server-2.2-stig-baseline
+# apache-server-2.2-stig-baseline 
 
 InSpec Profile to validate the secure configuration of apache-server-2.2-stig-baseline, against [DISA's](https://iase.disa.mil/stigs/Pages/index.aspx) Apache HTTPD Server per Apache site 2.2 STIG Ver 1, Rel 10
 
-## Getting Started  
-It is intended and recommended that InSpec run this profile from a __"runner"__ host (such as a DevOps orchestration server, an administrative management system, or a developer's workstation/laptop) against the target remotely over __ssh__.
+#### Container-Ready: Profile updated to adapt checks when the running against a containerized instance of MySQL, based on reference container: (docker pull httpd) at https://hub.docker.com/_/httpd
 
+## Getting Started  
+
+__For the best security of the runner, always install on the runner the _latest version_ of InSpec and supporting Ruby language components.__ 
 The latest versions and installation options are available at the [InSpec](http://inspec.io/) site.
 
 ## Tailoring to Your Environment
@@ -38,10 +40,15 @@ apache_owner: ''
 
 # Running This Baseline Directly from Github
 
+Against a _**locally-hosted**_ instance (i.e., InSpec installed on the target host)
 ```
-# How to run
-inspec exec https://github.com/mitre/apache-server-2.2-stig-baseline/archive/master.tar.gz -t ssh:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+inspec exec https://github.com/mitre/apache-server-2.2-stig-baseline/archive/master.tar.gz --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
+Against a _**docker-containerized**_ instance (i.e., InSpec installed on the node hosting the container):
+```
+inspec exec https://github.com/mitre/apache-server-2.2-stig-baseline/archive/master.tar.gz -t docker://<instance_id> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+```
+
 
 ### Different Run Options
 
@@ -60,7 +67,7 @@ mkdir profiles
 cd profiles
 git clone https://github.com/mitre/apache-server-2.2-stig-baseline
 inspec archive apache-server-2.2-stig-baseline
-inspec exec <name of generated archive> -t ssh:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+inspec exec <name of generated archive> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 For every successive run, follow these steps to always have the latest version of this baseline:
 
@@ -69,7 +76,7 @@ cd apache-server-2.2-stig-baseline
 git pull
 cd ..
 inspec archive apache-server-2.2-stig-baseline --overwrite
-inspec exec <name of generated archive> -t ssh:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+inspec exec <name of generated archive> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 
 ## Viewing the JSON Results

@@ -44,7 +44,7 @@ If either of these exist and they configure /bin/csh, or any other shell as a
 viewer for documents, this is a finding."
   tag "fix": "Disable MIME types for csh or sh shell programs."
   
-  describe apache_conf('/etc/httpd/conf/httpd.conf') do
+  describe apache_conf(input('apache_conf_file')) do
     its('Action') { should_not match /\/bin/ }
     its('AddHandler') { should_not match /\/bin/ }
   end
